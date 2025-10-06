@@ -17,11 +17,10 @@ int main(){
     std::vector<std::vector<float>> aPos;
     std::vector<float> tempArray;
 
-  
-
     //WriteCoordinatesFile(row, column, heigth, maxRow, maxColumn, incrementRow, increamentColumn, countRow, countColumn);
       std::ifstream MyReadFile("coordinates.dat");
       ReadCoordinates(countArrayRow, MyReadFile, myText, countArrayColumn, auxString, parsedCoordinates, tempArray, aPos);
+
 
       return 0;
 }
@@ -29,11 +28,19 @@ int main(){
 void ReadCoordinates(int &countArrayRow, std::ifstream &MyReadFile, std::string &myText, int &countArrayColumn, std::stringstream &auxString, std::string &parsedCoordinates, std::vector<float> &tempArray, std::vector<std::vector<float>> &aPos)
 {
     countArrayRow = 0;
+    countArrayColumn=0;
+    int reset=0;
+
     while (std::getline(MyReadFile, myText, ' '))
     {
         // std::cout<<myText<< "\n ";
-        countArrayColumn = 0;
+        
         auxString << myText;
+        if(myText == ""){
+            countArrayRow++;
+            reset=1;
+            
+        }
         while (std::getline(auxString, parsedCoordinates, ','))
         {
 
@@ -43,6 +50,10 @@ void ReadCoordinates(int &countArrayRow, std::ifstream &MyReadFile, std::string 
 
         tempArray.clear();
         auxString.clear();
+        if(!reset){
+            countArrayColumn++;
+        }
+        
     }
 
     for (const auto &row1 : aPos)
@@ -53,6 +64,7 @@ void ReadCoordinates(int &countArrayRow, std::ifstream &MyReadFile, std::string 
         }
         std::cout << std::endl;
     }
+    std::cout<< countArrayRow << "x" <<countArrayColumn<< std::endl;
 }
 
 void WriteCoordinatesFile(float &row, float &column, float &heigth, float &maxRow, float &maxColumn, float &incrementRow, float &increamentColumn, int &countRow, int &countColumn)
