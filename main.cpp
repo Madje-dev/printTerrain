@@ -12,25 +12,27 @@ int main(){
     float row, column, heigth;
     float maxRow, maxColumn;
     float incrementRow, increamentColumn;
-    std::string myText, parsedCoordinates;
+    std::string myText, parsedCoordinates, fileName;
     std::stringstream auxString; 
     std::vector<std::vector<float>> aPos;
     std::vector<float> tempArray;
 
-    //WriteCoordinatesFile(row, column, heigth, maxRow, maxColumn, incrementRow, increamentColumn, countRow, countColumn);
-      std::ifstream MyReadFile("coordinates.dat");
-      ReadCoordinates(countArrayRow, MyReadFile, myText, countArrayColumn, auxString, parsedCoordinates, tempArray, aPos);
+    fileName = "coordinates.dat";
 
+    //WriteCoordinatesFile(row, column, heigth, maxRow, maxColumn, incrementRow, increamentColumn, countRow, countColumn);
+      ReadCoordinates(countArrayRow, fileName , myText, countArrayColumn, auxString, parsedCoordinates, tempArray, aPos);
 
       return 0;
 }
 
-void ReadCoordinates(int &countArrayRow, std::ifstream &MyReadFile, std::string &myText, int &countArrayColumn, std::stringstream &auxString, std::string &parsedCoordinates, std::vector<float> &tempArray, std::vector<std::vector<float>> &aPos)
+void ReadCoordinates(int &countArrayRow, std::string &fileName, std::string &myText, int &countArrayColumn, std::stringstream &auxString, std::string &parsedCoordinates, std::vector<float> &tempArray, std::vector<std::vector<float>> &aPos)
 {
     countArrayRow = 0;
     countArrayColumn=0;
     int reset=0;
-
+    std::ifstream MyReadFile;
+    MyReadFile.open(fileName);
+    
     while (std::getline(MyReadFile, myText, ' '))
     {
         // std::cout<<myText<< "\n ";
@@ -65,6 +67,7 @@ void ReadCoordinates(int &countArrayRow, std::ifstream &MyReadFile, std::string 
         std::cout << std::endl;
     }
     std::cout<< countArrayRow << "x" <<countArrayColumn<< std::endl;
+    MyReadFile.close();
 }
 
 void WriteCoordinatesFile(float &row, float &column, float &heigth, float &maxRow, float &maxColumn, float &incrementRow, float &increamentColumn, int &countRow, int &countColumn)
@@ -82,6 +85,8 @@ void WriteCoordinatesFile(float &row, float &column, float &heigth, float &maxRo
     countRow = 0;
     countColumn = 0;
     
+    
+
     for (row = maxRow; row >= -delta; row = row - incrementRow)
     {
         sentence = "";
