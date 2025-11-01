@@ -24,7 +24,7 @@ int main(){
     fileName = "coordinates.dat";
     indiceFileName = "indices.dat";
 
-    WriteCoordinatesFile(row, column, heigth, maxRow, maxColumn, incrementRow, increamentColumn, countRow, countColumn);
+    //WriteCoordinatesFile(row, column, heigth, maxRow, maxColumn, incrementRow, increamentColumn, countRow, countColumn);
     ReadCoordinates(countArrayRow, fileName , myText, countArrayColumn, auxString, parsedCoordinates, tempArray, aPos);
     writeIndices(indiceArray, countArrayRow, countArrayColumn, indiceFileName);
 
@@ -79,7 +79,7 @@ void ReadCoordinates(int &countArrayRow, std::string &fileName, std::string &myT
 
 void WriteCoordinatesFile(float &row, float &column, float &heigth, float &maxRow, float &maxColumn, float &incrementRow, float &increamentColumn, int &countRow, int &countColumn)
 {
-    float delta=0.0001;
+    float delta=0.01;
     std::string sentence;
     std::ofstream Myfile("coordinates.dat");
     row = 0;
@@ -87,8 +87,8 @@ void WriteCoordinatesFile(float &row, float &column, float &heigth, float &maxRo
     heigth = 0;
     maxRow = 1.0;
     maxColumn = 1.01;
-    incrementRow = 0.001;
-    increamentColumn = 0.001;
+    incrementRow = 0.01;
+    increamentColumn = 0.01;
     countRow = 0;
     countColumn = 0;
     
@@ -123,34 +123,39 @@ void WriteCoordinatesFile(float &row, float &column, float &heigth, float &maxRo
 
 
 void writeIndices(std::vector<int> indiceArray, int row, int column, std::string indiceFileName){
-    int j;
-    int columnLimit;
-    
     std::ofstream MyFile;
     int totalIndices;
-    totalIndices = row*column;
-    j=column;
-    columnLimit=column-1;
-    for(int i=0; i<=totalIndices/2+column+2; i++){
-        //first triangle
-         indiceArray.push_back(i);
-         indiceArray.push_back(i+1);
-         indiceArray.push_back(j);
-         //second triangle
-         indiceArray.push_back(i+1);
-         indiceArray.push_back(j);
-         indiceArray.push_back(j+1);
-         int test = i+1;
-         if(test==columnLimit){
-            i=i+1;
-            columnLimit=columnLimit+column;
+    int m, n, i, j;
+    int verticeNumber, reBasedI, lineAbove;
+    m=row-1;
+    n=column-1;
+    
+    for (i=0; i<m; i++){
+        for ( j=0; j<n; j++){
+            if(i==0){
+                reBasedI=0;
+            }else{
+                reBasedI=column*i;
+            }
+            lineAbove=reBasedI+column;
+            verticeNumber = reBasedI+j;
+            indiceArray.push_back(verticeNumber);
+            indiceArray.push_back(lineAbove+j);
+            indiceArray.push_back(verticeNumber+1);
+            
+            indiceArray.push_back(verticeNumber+1);
+            indiceArray.push_back(lineAbove+j+1);
+            indiceArray.push_back(lineAbove+j);
+            
 
-         }
-         if(j+1==columnLimit){
-            j=j+1;
-         }
-         j=j+1;
+        }
+        std::cout << "i = "<< i << "; j = " << j << std::endl;
     }
+    
+    
+    
+    
+    
     MyFile.open(indiceFileName);
     std::cout<< indiceArray.size()<< std:: endl;
     for(int i=0; i<=(indiceArray.size()-1); i=i+3){
